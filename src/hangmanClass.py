@@ -35,6 +35,7 @@ class HangMan:
                 self.lose = True
     
     def guess_word(self, word: str) -> None:
+        word = list(word)
         if word == self.word:
             self.display = list(word) # This splits The characters of the word into a list.
             self.win = True

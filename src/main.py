@@ -26,6 +26,11 @@ def getScreenSize(app) -> Tuple[int]:
     sizeObject = app.primaryScreen().size()
     return sizeObject.width(), sizeObject.height()
 
+def cleanALayout(layout) -> None:
+    for i in reversed(range(layout.count())): 
+            layout.itemAt(i).widget().setParent(None)
+
+
 darkTheme, lightTheme = 'dark_blue.xml', 'light_blue.xml'
 
 class HangManGUI(QApplication):
@@ -63,14 +68,14 @@ class HangManGUI(QApplication):
         self.mainWidLayout.addWidget(self.livesLabel)
 
         self.displayWidget = QWidget()
-        displayLayout = QHBoxLayout()
-        self.displayWidget.setLayout(displayLayout)
+        self.displayLayout = QHBoxLayout()
+        self.displayWidget.setLayout(self.displayLayout)
 
         self.charLabels = []
 
         for i in range(len(self.gameObject.display)):
             self.charLabels.append(QLabel('_'))
-            displayLayout.addWidget(self.charLabels[i])
+            self.displayLayout.addWidget(self.charLabels[i])
 
         self.mainWidLayout.addWidget(self.displayWidget)
         self.mainWid.setLayout(self.mainWidLayout)
@@ -140,8 +145,14 @@ class HangManGUI(QApplication):
         self.gameObject = HangMan()
         self.winLabel.setText('')
         self.livesLabel.setText('Lives left: ' + str(self.gameObject.lives))
+        
+        cleanALayout(self.displayLayout)
+        
+        self.charLabels = []
+
         for i in range(len(self.gameObject.display)):
-            self.charLabels[i].setText(self.gameObject.display[i])
+            self.charLabels.append(QLabel('_'))
+            self.displayLayout.addWidget(self.charLabels[i])
 
     def setTheme(self, theme: int):
         if theme == 0:
