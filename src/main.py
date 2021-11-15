@@ -19,14 +19,14 @@ from darkdetect import isDark
 from qt_material import apply_stylesheet
 
 #
-# @breif gives screen size has (width, height)
+# @breif gives screen size has (height, width)
 # @return Tuple of width, height
 # 
 def getScreenSize() -> Tuple[int]:
     root = Tk()
     return (
-        root.winfo_screenmmwidth(), 
-        root.winfo_screenheight()
+        root.winfo_screenheight(),
+        root.winfo_screenmmwidth() 
     )
 
 screenSize = getScreenSize()
@@ -142,7 +142,11 @@ class HangManGUI(QApplication):
         self.setTheme(0)
 
     def startNewGame(self):
-        pass
+        self.gameObject = HangMan()
+        self.winLabel.setText('')
+        self.livesLabel.setText('Lives left: ' + str(self.gameObject.lives))
+        for i in range(len(self.gameObject.display)):
+            self.charLabels[i].setText(self.gameObject.display[i])
 
     def setTheme(self, theme: int):
         if theme == 0:
