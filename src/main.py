@@ -10,43 +10,38 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QMenuBar,
     QMenu,
-    QAction
+    QAction, 
+    QDesktopWidget
 )
 import sys
-from tkinter import Tk
 from typing import Tuple
 from darkdetect import isDark
 from qt_material import apply_stylesheet
 
 #
-# @breif gives screen size has (height, width)
+# @breif gives screen size has (width, height)
 # @return Tuple of width, height
 # 
-def getScreenSize() -> Tuple[int]:
-    root = Tk()
-    return (
-        root.winfo_screenheight(),
-        root.winfo_screenmmwidth() 
-    )
+def getScreenSize(app) -> Tuple[int]:
+    sizeObject = app.primaryScreen().size()
+    return sizeObject.width(), sizeObject.height()
 
-screenSize = getScreenSize()
 darkTheme, lightTheme = 'dark_blue.xml', 'light_blue.xml'
-
-# We want to make a full Screen window for smaller screen and smaller window for larger screens.
-size = [
-    screenSize[0] if screenSize[0] <= 540 else screenSize[0] // 2,
-    screenSize[1] if screenSize[1] <= 960 else screenSize[1] // 2 
-]
 
 class HangManGUI(QApplication):
     def __init__(self) -> None:
-        global size
-
         self.gameObject = HangMan()
 
         super().__init__(["HangMan"])
         self.mainWindow = QMainWindow()
         self.mainWid = QWidget()
+        
+        ss = getScreenSize(self)
+        size = [
+            ss[0] if ss[0] <= 540 else ss[0] // 2,
+            ss[1] if ss[1] <= 960 else ss[1] // 2
+        ]
+
         self.mainWindow.resize(*size) # You can also use setGeometry() method but I prefer this one.
         # I do not care where Window is coming.
 
