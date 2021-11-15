@@ -1,2 +1,3 @@
 # Hangman
-Making a Hangman game with Python and PyQt5
+
+- Making a Hangman game with Python and PyQt5
